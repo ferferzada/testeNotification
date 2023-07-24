@@ -1,31 +1,30 @@
-if ('serviceWorker' in navigator && 'PushManager' in window) {
 
-    navigator.serviceWorker.register('service-worker.js')
-    .then(function(swReg) {
-        console.log('Service Worker foi registrado', swReg);
 
-        swRegistration = swReg;
+navigator.serviceWorker.register('sw.js')
+.then((registration) => {
+    // Use o objeto registration para configurar a inscrição para notificações push
+})
+.catch((error) => {
+    console.error('Service Worker Error', error);
+});
+async function sendNotificationAsync() {
+    // Request permission
+    try {
+        await Push.Permission.request();
 
-        return swRegistration.pushManager.getSubscription();
-    })
-    .then(function(subscription) {
-        if (subscription === null) {
-            // Ainda não inscrito para Push, vamos inscrever
-
-            const applicationServerKey = urlB64ToUint8Array(applicationServerPublicKey);
-            return swRegistration.pushManager.subscribe({
-                userVisibleOnly: true,
-                applicationServerKey: applicationServerKey
-            });
-        }
-    })
-    .then(function(newSubscription) {
-        console.log('Usuário agora inscrito para receber notificações push: ', newSubscription);
-    })
-    .catch(function(err) {
-        console.error('Não foi possível registrar o service worker. ', err);
-    });
-} else {
-  console.warn('Push messaging is not supported');
-  pushButton.textContent = 'Push Not Supported';
+        // Permission granted, notify the us r.
+        Push.create("Hello!", {
+            body: "This is an asynchronous test notification!",
+            icon: '/path/to/icon.png',
+            timeout: 4000, // Notification closes after 4 seconds
+            onClick: function() {
+                // Handle notification click
+                window.focus();
+                this.close();
+            }
+        });
+    } catch (err) {
+        // The request for permission was denied or there was another error
+        alert("Notification permissions denied or there was an error.");
+    }
 }
