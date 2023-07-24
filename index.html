@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Push.js Test</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/push.js/1.0.9/push.min.js"></script>
+</head>
+<body>
+    <button onclick="sendNotificationAsync()">Send Notification</button>
+
+    <script>
+        async function sendNotificationAsync() {
+            // Request permission
+            try {
+                await Push.Permission.request();
+
+                // Permission granted, notify the user.
+                Push.create("Hello!", {
+                    body: "This is an asynchronous test notification!",
+                    icon: '/path/to/icon.png',
+                    timeout: 4000, // Notification closes after 4 seconds
+                    onClick: function() {
+                        // Handle notification click
+                        window.focus();
+                        this.close();
+                    }
+                });
+            } catch (err) {
+                // The request for permission was denied or there was another error
+                alert("Notification permissions denied or there was an error.");
+            }
+        }
+    </script>
+</body>
+</html>
