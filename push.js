@@ -1,61 +1,51 @@
+const publicVapidKey = 'BHYKsidI-muNkvZwepxrCNNzE3hGbBKPoUTPD4Pc44QZ3upswMqBCkREGQb8stvL6yKpAAVx3g9IdEP_bcj7XrY'; 
 
 
-navigator.serviceWorker.register('sw.js')
-.then((registration) => {
-    // Use o objeto registration para configurar a inscrição para notificações push
-})
-.catch((error) => {
-    console.error('Service Worker Error', error);
-});
-async function sendNotificationAsync() {
-    // Request permission
-    try {
-        await Push.Permission.request();
+if ('serviceWorker' in navigator && 'PushManager' in window) {
 
-        // Permission granted, notify the us r.
-        Push.create("Hello!", {
-            body: "This is an asynchronous test notification!",
-            icon: '/path/to/icon.png',
-            timeout: 4000, // Notification closes after 4 seconds
-            onClick: function() {
-                // Handle notification click
-                window.focus();
-                this.close();
-            }
-        });
-    } catch (err) {
-        // The request for permission was denied or there was another error
-        alert("Notification permissions denied or there was an error.");
-    }
-}
-let button = document.getElementById("notification-button");
+  navigator.serviceWorker.register('sw.js').then(registration => {
+    console.log('Service Worker registrado com sucesso:', registration);
 
-button.addEventListener("click", function() {
-    // Verifica se o navegador suporta o Notification API
-    if (!("Notification" in window)) {
-        alert("Este navegador não suporta notificações de sistema.");
-    } 
-    // Verifica a permissão atual
-    else if (Notification.permission === "granted") {
-        alert("Você já habilitou as notificações!");
-    } 
-    // Solicita a permissão se ainda não foi solicitada ou negada
-    else if (Notification.permission !== "denied") {
-        Notification.requestPermission().then(function (permission) {
-            // Se o usuário aceitou a permissão, nós configuramos a notificação
-            if (permission === "granted") {
-                alert("Notificações habilitadas!");
-            }
-        });
-    }
-});
-let butto = document.getElementById("notify-button");
+  
+    const subscribeButton = document.getElementById('subscribe-button');
+    subscribeButton.addEventListener('click', () => {
+    
+      Notification.requestPermission().then(permission => {
+        if (permission === 'granted') {
+          console.log('Permissão para notificações concedida.');
 
-butto.addEventListener('click', function() {
-    navigator.serviceWorker.ready.then(function(registration) {
-        registration.showNotification('Notificação do Service Worker', {
-            body: 'Esta é uma mensagem de exemplo!',
-            icon: '/images/icon.png',
-        });
+         
+          registration.pushManager.subscribe({
+            userVisibleOnly: true, 
+            applicationServerKey: urlBase64ToUint8Array(publicVapidKey)
+          }).then(subscription => {
+            console.log('Usuário inscrito.');
+            console.log(JSON.stringify(subscription));
+            // Aqui você deve enviar os detalhes da inscrição para o seu servidor
+          }).catch(error => {
+            console.error('Falha na inscrição do usuário: ', error);
+          });
+        }
+      });
     });
-});
+  }).catch(error => {
+    console.error('Falha no registro do Service Worker:', error);
+  });
+} else {
+  console.warn('Push messaging is not supported');
+}
+
+function urlBase64ToUint8Array(base64String) {
+  const padding = '='.repeat((4 - base64String.length % 4) % 4);
+  const base64 = (base64String + padding)
+    .replace(/-/g, '+')
+    .replace(/_/g, '/');
+
+  const rawData = window.atob(base64);
+  const outputArray = new Uint8Array(rawData.length);
+
+  for (let i = 0; i < rawData.length; ++i) {
+    outputArray[i] = rawData.charCodeAt(i);
+  }
+  return outputArray;
+}
