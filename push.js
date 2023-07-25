@@ -49,3 +49,13 @@ button.addEventListener("click", function() {
         });
     }
 });
+let butto = document.getElementById("notify-button");
+
+butto.addEventListener('click', function() {
+    navigator.serviceWorker.ready.then(function(registration) {
+        registration.showNotification('Notificação do Service Worker', {
+            body: 'Esta é uma mensagem de exemplo!',
+            icon: '/images/icon.png',
+        });
+    });
+});
