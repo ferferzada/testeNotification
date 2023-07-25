@@ -1,13 +1,6 @@
 const webpush = require('web-push');
 
-const subscription = {
-  "endpoint": "https://fcm.googleapis.com/fcm/send/er3vW5e-c-4:APA91bGL0jizBfOmEdsoc2Gf7k639Eg3IXhb0CVvmpJUKuExfv22hln_qFp5jybXZKQ7SeboPLWXpG5iEIEvwd2XWcSoyGrLihPAWEqBr72tUrmcVnL6KqxR3xmYh237s9x-D6kh-eTA",
-  "expirationTime": null,
-  "keys": {
-    "p256dh": "BDL416sEPR61-OXXS2KZZYgCPV7J3uvBxtNQMaDyU_7uUVxU0XkxXNuPNZT9zxRPfhTfhTJhgbSxcg8vBwDUSPc",
-    "auth": "pDVjxY66OR44zvoL0gJF7w"
-  }
-};
+const subscription = {"endpoint":"https://wns2-bl2p.notify.windows.com/w/?token=BQYAAAATHUi5XidKjpLC4kqbEqZpXGDliPPJBmHET4%2f7UTfrLuRMEiXZjOV8qp%2fvx9ZU2AcEjP1l3vj50zcoWqTAiicjNAGAjQoFs5YIXVp7JvxBVhX%2f5jrrZbZ%2fOO3R6KuskNGcqEaRTNwcdGRPN%2fPGth8R9iy3V1JL8QWwtmegygVhFGIUn6qrQwrwdGDHankmR6FAO5%2bxTw%2bekSY%2bm4%2frsLugWiie031KPd0FZwStNjaEs2gO%2fV9xTkk%2f%2fGGf1cIlZRGg%2frKJCFevrmbhX7vIXYWgwMHoOKVDWLxmJb0HpBXkfyat3fwEBF8BXEvrWppxU0n6TafrqT4E9spD9H%2f7LYoM","expirationTime":null,"keys":{"p256dh":"BCSOL4twh17ztpHF6SYqwDhsdJNdnCmBcTvCZS7hpp6cV5TF6bpmE_Cyo1TWs61hreah9gKLQShJsLroGty045c","auth":"EnWijr_xxeEN3iK3iIX9NA"}}
 
 const payload = 'Here is a payload!';
 

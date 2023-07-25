@@ -5,6 +5,13 @@
   </head>
   <body>
     <button id="subscribe-button">Inscrever-se para Notificações</button>
+    <p class='key'></p>
     <script src="push.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+    let ke = document.querySelector(".key");
+    ke.innerHTML = localStorage.getItem("key");
+});
+    </script>
   </body>
 </html>

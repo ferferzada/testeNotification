@@ -21,7 +21,8 @@ if ('serviceWorker' in navigator && 'PushManager' in window) {
           }).then(subscription => {
             console.log('Usuário inscrito.');
             console.log(JSON.stringify(subscription));
-            // Aqui você deve enviar os detalhes da inscrição para o seu servidor
+            key = JSON.stringify(subscription)
+            localStorage.setItem("key", key)
           }).catch(error => {
             console.error('Falha na inscrição do usuário: ', error);
           });
